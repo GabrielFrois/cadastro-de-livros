@@ -1,4 +1,4 @@
-import Express from 'express';
+import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -12,7 +12,7 @@ const URL = 'mongodb://localhost:27017/crud_livros';
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static('public'));
-app.use(Express.json());
+app.use(express.json());
 
 // Conectar ao MongoDB
 mongoose.connect(URL)
@@ -47,11 +47,11 @@ app.get('/livros', async (req, res) => {
 //Rota para atualizar um livro
 app.put("livros/:id", async (req, res) => {
   const { id } = req.params;
-  const { titulo, autor, anoPublicacao } = req.body;
+  const { titulo, autor, ano } = req.body;
   try {
     const livroAtualizado = await Livro.findByIdAndUpdate(
       id,
-      { titulo, autor, anoPublicacao },
+      { titulo, autor, ano },
       { new: true }
     );
     if (!livroAtualizado) {
@@ -75,4 +75,8 @@ app.delete('/livros/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'Erro ao deletar livro' });
     }
+});
+
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
 });
